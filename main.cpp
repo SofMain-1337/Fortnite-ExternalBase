@@ -8,13 +8,14 @@
 #include <thread>
 
 
-void cr3_loop()
+void cr3_loop() //UPDATED CR3 CAUSE U WOULDNT KNOW HOW TO UPDATE IT CAUSE YALL GIGA PASTERS UwU -SOFMAIN //Fixed the lagg (it might still crash some times tho idk everything here is shit)
 {
-	//UPDATED CR3 CAUSE U WOULDNT KNOW HOW TO UPDATE IT CAUSE YALL GIGA PASTERS UwU -SOFMAIN //KINDA SHIT AND LAGGY BUT WORKS AND ITS OKAY TO USE
-	for (;;)
+	while (true)
 	{
-		mem::fetch_cr3();
-		std::this_thread::sleep_for(std::chrono::milliseconds(000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001)); //100
+
+		mem::fetch_cr3(); //loads cr3
+		std::this_thread::sleep_for(std::chrono::milliseconds(0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001)); //100
+		virtualaddy = mem::find_image(); //finding img
 	}
 }
 
@@ -58,9 +59,9 @@ void main()
 	}
 
 	//DONT TOUCH HERE PASTER! TOUCH ONLY IF YOU WANNA CHANGE DRIVER OR IF YOU KNOW WHAT YOU ARE DOING! -SOFMAIN
-	virtualaddy = mem::find_image(); //finding img
-	cr3 = mem::fetch_cr3(); //loading cr3
-	std::thread([&]() { for (;;) { cr3_loop(); } }).detach(); //for UPDATED CR3 ( Shitty method btw laggy af )
+	//virtualaddy = mem::find_image(); //finding img
+	//cr3 = mem::fetch_cr3(); //loading cr3
+	std::thread([&]() { while (true) { cr3_loop(); } }).detach(); //for UPDATED CR3 ( Shitty method btw laggy af )
 	if (!mem::driver_handle) //base_address //driver_handle
 	{
 		printf("The driver couldn't get the base address"); //Check ur driver base in the code if u get this error! Mine doesnt have a base_address so its driver_handle
