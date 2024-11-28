@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\SFN\Desktop\kernel mode\build\driver\driver.sys</FullPath>
+      <FullPath>C:\Users\SFN\Desktop\base\SofMainFnBase Pub\kernel mode\build\driver\driver.sys</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

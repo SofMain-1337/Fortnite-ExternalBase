@@ -142,6 +142,16 @@ void draw_cornered_box(int x, int y, int w, int h, const ImColor color, int thic
 	ImGui::GetForegroundDrawList()->AddLine(ImVec2(x + w, y + h - (h / 3)), ImVec2(x + w, y + h), color, thickness);
 }
 
+
+
+void Box(int X, int Y, int W, int H, const ImColor color, int thickness)
+{
+	ImGui::GetForegroundDrawList()->AddLine(ImVec2{ (float)X, (float)Y }, ImVec2{ (float)(X + W), (float)Y }, color, thickness);
+	ImGui::GetForegroundDrawList()->AddLine(ImVec2{ (float)(X + W), (float)Y }, ImVec2{ (float)(X + W), (float)(Y + H) }, color, thickness);
+	ImGui::GetForegroundDrawList()->AddLine(ImVec2{ (float)X, (float)(Y + H) }, ImVec2{ (float)(X + W), (float)(Y + H) }, color, thickness);
+	ImGui::GetForegroundDrawList()->AddLine(ImVec2{ (float)X, (float)Y }, ImVec2{ (float)X, (float)(Y + H) }, color, thickness);
+}
+
 void draw_filled_rect(int x, int y, int w, int h, const ImColor color)
 {
 	ImGui::GetForegroundDrawList()->AddRectFilled(ImVec2(x, y), ImVec2(x + w, y + h), color, 0, 0);
@@ -158,6 +168,67 @@ void draw_distance(Vector2 location, float distance, const ImColor color)
 	sprintf_s(dist, "%.fm", distance);
 	ImVec2 text_size = ImGui::CalcTextSize(dist);
 	ImGui::GetForegroundDrawList()->AddText(ImVec2(location.x - text_size.x / 2, location.y - text_size.y / 2), color, dist);
+}
+
+#include <chrono>
+
+using namespace std::chrono;
+
+void Debugg()
+{
+	// Get the current time to calculate FPS
+	static auto lastTime = high_resolution_clock::now();
+	static int frameCount = 0;
+
+	// Calculate FPS
+	auto currentTime = high_resolution_clock::now();
+	duration<float> deltaTime = currentTime - lastTime;
+	lastTime = currentTime;
+	frameCount++;
+
+	// Update FPS every second
+	static float fps = 0.0f;
+	if (deltaTime.count() >= 1.0f) {
+		fps = frameCount / deltaTime.count();
+		frameCount = 0;
+	}
+
+	// Set watermark text
+	const char* text = "[Status: Undedected] - [Developer: SofMain]";
+
+
+	// Set FPS text
+	char fpsText[64];
+	snprintf(fpsText, sizeof(fpsText), "FPS: %.2f", fps);
+
+	// Combine watermark text and FPS
+	const char* fullText = nullptr;
+	char combinedText[256];
+	snprintf(combinedText, sizeof(combinedText), "%s | %s", text, fpsText);
+	fullText = combinedText;
+
+	// Calculate text size and position
+	ImVec2 position = ImVec2(30, 30); // Starting position of the watermark
+	ImVec2 textSize = ImGui::CalcTextSize(fullText);
+
+	// Adjust position based on the text size
+	ImVec2 newPosition = ImVec2(position.x, position.y + textSize.y);
+
+	// Draw the watermark with FPS on the screen
+	ImGui::SetCursorPos(newPosition);
+	ImGui::Text("%s", fullText);
+}
+
+ImVec2 GetWatermarkSize()
+{
+	ImVec2 position = ImVec2(30, 30);
+	const char* text = "SofMain FN Base [Private Build]";
+
+	//ImVec2 position = ImVec2(30, 30);
+	//const char* text = "Fortnite [Public]";
+
+	ImVec2 textSize = ImGui::CalcTextSize(text);
+	return ImVec2(position.x, position.y + textSize.y);
 }
 
 
@@ -201,7 +272,22 @@ void game_loop()
 		float distance = cache::relative_location.distance(bottom3d) / 100;
 		if (settings::visuals::enable)
 		{
-			if (settings::visuals::box)
+			if (settings::visuals::Box)
+			{
+				if (is_visible(mesh))
+				{
+					Box(head2d.x - (box_width / 2), head2d.y, box_width, box_height, ImColor(250, 250, 250, 250), 1);
+				}
+				else
+				{
+					Box(head2d.x - (box_width / 2), head2d.y, box_width, box_height, ImColor(250, 0, 0, 250), 1);
+				}
+				if (settings::visuals::fill_box) draw_filled_rect(head2d.x - (box_width / 2), head2d.y, box_width, box_height, ImColor(0, 0, 0, 50));
+			}
+		}
+		if (settings::visuals::enable)
+		{
+			if (settings::visuals::CorneredBox)
 			{
 				if (is_visible(mesh))
 				{
@@ -256,6 +342,26 @@ void game_loop()
 
 		//draw_list->AddLine(horizontal_start, horizontal_end, settings::crosshair_color, settings::crosshair_thickness);
 		//draw_list->AddLine(vertical_start, vertical_end, settings::crosshair_color, settings::crosshair_thickness);
+	}
+	if (settings::Features::Watermark) {
+
+		ImVec2 position = ImVec2(30, 30);
+		ImColor color = ImColor(0.63f, 0.13f, 0.94f, 1.f);
+		const char* text = "SofMain FN Base [Private Build]";
+
+		//  ImVec2 position = ImVec2(30, 30);
+		//  ImColor color = ImColor(1.0f, 1.0f, 1.0f, 1.f);
+		//  const char* text = "SofMain FN Base [Private Build]";
+
+		ImGui::GetForegroundDrawList()->AddText(position, color, text);
+
+
+	}
+	if (settings::Features::Debug) {
+
+
+		Debugg();
+
 	}
 }
 
@@ -314,9 +420,10 @@ void render_menu()
 			case 1:
 			{
 				ImGui::Checkbox("Enable", &settings::visuals::enable);
-				ImGui::Checkbox("Box", &settings::visuals::box);
+				ImGui::Checkbox("Cornered Box", &settings::visuals::CorneredBox);
 				ImGui::SameLine();
 				ImGui::Checkbox("Fill Box", &settings::visuals::fill_box);
+				ImGui::Checkbox("Box", &settings::visuals::Box);
 				ImGui::Checkbox("Line", &settings::visuals::line);
 				ImGui::Checkbox("Distance", &settings::visuals::distance);
 				break;
@@ -335,6 +442,8 @@ void render_menu()
 
 					//}
 			//	}
+				ImGui::Checkbox("WaterMark", &settings::Features::Watermark);
+				ImGui::Checkbox("Debug", &settings::Features::Debug);
 				if (ImGui::Button("Unload", { 120, 20 })) exit(0);
 				break;
 			}

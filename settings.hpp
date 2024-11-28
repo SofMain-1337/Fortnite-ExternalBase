@@ -27,9 +27,18 @@ namespace settings
 	namespace visuals
 	{
 		inline bool enable = false;
-		inline bool box = false;
+		inline bool CorneredBox = false;
 		inline bool fill_box = false;
 		inline bool line = false;
 		inline bool distance = false;
+		inline bool Box;
+	}
+	namespace Features
+	{
+		inline bool FPS = true;
+		bool isVSyncEnabled = true;
+		inline bool Watermark = true;
+		inline bool RenderCount;
+		inline bool Debug = false;
 	}
 }
