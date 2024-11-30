@@ -28,11 +28,11 @@ extern "C" NTSTATUS NTAPI IoCreateDriver(PUNICODE_STRING DriverName, PDRIVER_INI
 extern "C" PVOID NTAPI PsGetProcessSectionBaseAddress(PEPROCESS Process);
 extern "C" NTSTATUS NTAPI ZwQuerySystemInformation(SYSTEM_INFORMATION_CLASS systemInformationClass, PVOID systemInformation, ULONG systemInformationLength, PULONG returnLength);
 
-#define code_rw CTL_CODE(FILE_DEVICE_UNKNOWN, 0x2656, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
-#define code_ba CTL_CODE(FILE_DEVICE_UNKNOWN, 0x2657, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
-#define code_get_guarded_region CTL_CODE(FILE_DEVICE_UNKNOWN, 0x2658, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
-#define code_GetDirBase CTL_CODE(FILE_DEVICE_UNKNOWN, 0x2659, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
-#define code_security 0x94c6c70
+#define code_rw CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1545, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#define code_ba CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1546, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#define code_get_guarded_region CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1547, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#define code_GetDirBase CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1548, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#define code_security 0x83b5b69
 #define win_1803 17134
 #define win_1809 17763
 #define win_1903 18362
@@ -636,8 +636,8 @@ NTSTATUS initialize_driver(PDRIVER_OBJECT drv_obj, PUNICODE_STRING path) {
 	PDEVICE_OBJECT device_obj = NULL;
 
 	UNICODE_STRING name, link;
-	RtlInitUnicodeString(&name, L"\\Device\\sfnkasko"); // driver name
-	RtlInitUnicodeString(&link, L"\\DosDevices\\sfnkasko"); // driver name
+	RtlInitUnicodeString(&name, L"\\Device\\winniewhat12sofmain"); // driver name
+	RtlInitUnicodeString(&link, L"\\DosDevices\\winniewhat12sofmain"); // driver name
 
 	// Create the device
 	status = IoCreateDevice(drv_obj, 0, &name, FILE_DEVICE_UNKNOWN, FILE_DEVICE_SECURE_OPEN, FALSE, &device_obj);

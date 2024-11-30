@@ -9,13 +9,10 @@
     <ClCompile Include="driver.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="junk.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="defines.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="Spoof.h" />
-    <ClInclude Include="junk-useless.h" />
   </ItemGroup>
 </Project>

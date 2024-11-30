@@ -7,11 +7,11 @@
 uintptr_t virtualaddy;
 uintptr_t cr3;
 //SOFMAIN'S 1337 FULL UD DRIVER YEYEYEYEYEYEYE (HELLA9)
-#define code_rw CTL_CODE(FILE_DEVICE_UNKNOWN, 0x2656, METHOD_BUFFERED, FILE_SPECIAL_ACCESS) //rw NEEDED
-#define code_ba CTL_CODE(FILE_DEVICE_UNKNOWN, 0x2657, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)// ba NEEDED
-#define code_get_guarded_region CTL_CODE(FILE_DEVICE_UNKNOWN, 0x2658, METHOD_BUFFERED, FILE_SPECIAL_ACCESS) //Optional not always
-#define code_GetDirBase CTL_CODE(FILE_DEVICE_UNKNOWN, 0x2659, METHOD_BUFFERED, FILE_SPECIAL_ACCESS) //GDB NEEDED
-#define code_security 0x94c6c70 //OPTIONAL
+#define code_rw CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1545, METHOD_BUFFERED, FILE_SPECIAL_ACCESS) //rw NEEDED
+#define code_ba CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1546, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)// ba NEEDED
+#define code_get_guarded_region CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1547, METHOD_BUFFERED, FILE_SPECIAL_ACCESS) //Optional not always
+#define code_GetDirBase CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1548, METHOD_BUFFERED, FILE_SPECIAL_ACCESS) //GDB NEEDED
+#define code_security 0x83b5b69 //OPTIONAL
 
 typedef struct _rw {
 	INT32 security;
@@ -43,7 +43,7 @@ namespace mem {
 	INT32 process_id;
 
 	bool find_driver() {
-		driver_handle = CreateFileW((L"\\\\.\\sfnkasko"), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL); //DRIVER COMM NAME
+		driver_handle = CreateFileW((L"\\\\.\\winniewhat12sofmain"), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL); //DRIVER COMM NAME
 
 		if (!driver_handle || (driver_handle == INVALID_HANDLE_VALUE))
 			return false;
