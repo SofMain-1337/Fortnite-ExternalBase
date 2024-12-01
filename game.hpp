@@ -235,7 +235,7 @@ ImVec2 GetWatermarkSize()
 
 void game_loop()
 {
-	cache::uworld = read<uintptr_t>(virtualaddy + UWORLD);
+	cache::uworld = read<uintptr_t>(Base + UWORLD);
 	cache::game_instance = read<uintptr_t>(cache::uworld + GAME_INSTANCE);
 	cache::local_players = read<uintptr_t>(read<uintptr_t>(cache::game_instance + LOCAL_PLAYERS));
 	cache::player_controller = read<uintptr_t>(cache::local_players + PLAYER_CONTROLLER);
@@ -491,7 +491,7 @@ WPARAM render_loop()
 		}
 		else
 		{
-			game_wnd = get_process_wnd(mem::process_id);
+			game_wnd = get_process_wnd(processID);
 			Sleep(250);
 		}
 		RECT rc;

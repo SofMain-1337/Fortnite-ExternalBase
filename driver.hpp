@@ -1,150 +1,188 @@
 #pragma once
-//MY OWN DRIVER INCLUDED HERE YOU CAN CHANGE THAT TO YOUR OWN, IF YOU DONT WANNA GET DTC IN THE NEXT FEW DAYS! 
-//NOT GONNA EXPLAIN WHAT EVERYTHING DOES HERE TOO LAZY LOL
+//btw guys credits for this driver jeremyud! (its good ud i could say so you can last alot!)
+#include <winternl.h>
+#include <intrin.h>
 #include <Windows.h>
+#include <iostream>
 #include <TlHelp32.h>
-#include <cstdint>
-uintptr_t virtualaddy;
-uintptr_t cr3;
-//SOFMAIN'S 1337 FULL UD DRIVER YEYEYEYEYEYEYE (HELLA9)
-#define code_rw CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1545, METHOD_BUFFERED, FILE_SPECIAL_ACCESS) //rw NEEDED
-#define code_ba CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1546, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)// ba NEEDED
-#define code_get_guarded_region CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1547, METHOD_BUFFERED, FILE_SPECIAL_ACCESS) //Optional not always
-#define code_GetDirBase CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1548, METHOD_BUFFERED, FILE_SPECIAL_ACCESS) //GDB NEEDED
-#define code_security 0x83b5b69 //OPTIONAL
+#include <stdint.h>
 
-typedef struct _rw {
-	INT32 security;
-	INT32 process_id;
-	ULONGLONG address;
-	ULONGLONG buffer;
-	ULONGLONG size;
-	BOOLEAN write;
-} rw, * prw;
+inline uintptr_t Base;
+inline int processID;
 
-typedef struct _ba {
-	INT32 security;
-	INT32 process_id;
-	ULONGLONG* address;
-} ba, * pba;
+#define CTL_CODE( DeviceType, Function, Method, Access ) (                 \
+    ((DeviceType) << 16) | ((Access) << 14) | ((Function) << 2) | (Method) \
+)
 
-typedef struct _ga {
-	INT32 security;
-	ULONGLONG* address;
-} ga, * pga;
+#define IOCTL_GET_DIRECTORY_BASE_ADDRESS CTL_CODE(FILE_DEVICE_UNKNOWN, 0x234F, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#define IOCTL_READ_WRITE_OPERATION CTL_CODE(FILE_DEVICE_UNKNOWN, 0x845A, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#define IOCTL_MOUSE_MOVEMENT CTL_CODE(FILE_DEVICE_UNKNOWN, 0x458C, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#define IOCTL_GET_BASE_ADDRESS CTL_CODE(FILE_DEVICE_UNKNOWN, 0x85F1, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#define SECURITY_FLAG 0x34D391
 
-typedef struct _MEMORY_OPERATION_DATA {
-	uint32_t        pid;
-	ULONGLONG* cr3;
-} MEMORY_OPERATION_DATA, * PMEMORY_OPERATION_DATA;
+#define MOUSE_LEFT_BUTTON_DOWN   0x0001  // Left Button changed to down.
+#define MOUSE_LEFT_BUTTON_UP     0x0002  // Left Button changed to up.
 
-namespace mem {
-	HANDLE driver_handle;
-	INT32 process_id;
+inline static bool EAC = true;
 
-	bool find_driver() {
-		driver_handle = CreateFileW((L"\\\\.\\winniewhat12sofmain"), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL); //DRIVER COMM NAME
+typedef struct _ReadWrite
+{
+	INT32 Security;
+	INT32 ProcessID;
+	ULONGLONG Address;
+	ULONGLONG Buffer;
+	ULONGLONG Size;
+	BOOLEAN Write;
+	BOOLEAN EAC;
+} RW, * PRW;
 
-		if (!driver_handle || (driver_handle == INVALID_HANDLE_VALUE))
+typedef struct _MU
+{
+	long x;
+	long y;
+	unsigned short button_flags;
+};
+
+typedef struct _DTB
+{
+	INT32 Security;
+	INT32 ProcessID;
+	bool* Operation;
+} DTB, * DTBL;
+
+typedef struct _BA
+{
+	INT32 Security;
+	INT32 ProcessID;
+	ULONGLONG* Address;
+} BA, * PBA;
+
+namespace Driver
+{
+	inline HANDLE DriverHandle;
+	inline INT32 ProcessID;
+
+	inline bool Init()
+	{
+		DriverHandle = CreateFileA(("\\\\.\\\sofmainud"), GENERIC_READ | GENERIC_WRITE, 0, 0, 3, 0x00000080, 0);
+
+		if (!DriverHandle || (DriverHandle == INVALID_HANDLE_VALUE))
+
 			return false;
 
 		return true;
 	}
 
-	void read_physical(PVOID address, PVOID buffer, DWORD size) {
-		_rw arguments = { 0 };
+	inline void ReadPhysicalMemory(PVOID address, PVOID buffer, DWORD size)
+	{
+		_ReadWrite Arguments = { 0 };
+		Arguments.Security = SECURITY_FLAG;
+		Arguments.Address = (ULONGLONG)address;
+		Arguments.Buffer = (ULONGLONG)buffer;
+		Arguments.Size = size;
+		Arguments.ProcessID = ProcessID;
+		Arguments.Write = FALSE;
+		if (EAC)
+			Arguments.EAC = TRUE;
+		else
+			Arguments.EAC = FALSE;
 
-		arguments.security = code_security;
-		arguments.address = (ULONGLONG)address;
-		arguments.buffer = (ULONGLONG)buffer;
-		arguments.size = size;
-		arguments.process_id = process_id;
-		arguments.write = FALSE;
-
-		DeviceIoControl(driver_handle, code_rw, &arguments, sizeof(arguments), nullptr, NULL, NULL, NULL);
+		DeviceIoControl(DriverHandle, IOCTL_READ_WRITE_OPERATION, &Arguments, sizeof(Arguments), nullptr, NULL, NULL, NULL);
 	}
 
-	void write_physical(PVOID address, PVOID buffer, DWORD size) {
-		_rw arguments = { 0 };
+	inline void WritePhysicalMemory(PVOID address, PVOID buffer, DWORD size)
+	{
+		_ReadWrite Arguments = { 0 };
+		Arguments.Security = SECURITY_FLAG;
+		Arguments.Address = (ULONGLONG)address;
+		Arguments.Buffer = (ULONGLONG)buffer;
+		Arguments.Size = size;
+		Arguments.ProcessID = ProcessID;
+		Arguments.Write = TRUE;
+		if (EAC)
+			Arguments.EAC = TRUE;
+		else
+			Arguments.EAC = FALSE;
 
-		arguments.security = code_security;
-		arguments.address = (ULONGLONG)address;
-		arguments.buffer = (ULONGLONG)buffer;
-		arguments.size = size;
-		arguments.process_id = process_id;
-		arguments.write = TRUE;
-
-		DeviceIoControl(driver_handle, code_rw, &arguments, sizeof(arguments), nullptr, NULL, NULL, NULL);
+		DeviceIoControl(DriverHandle, IOCTL_READ_WRITE_OPERATION, &Arguments, sizeof(Arguments), nullptr, NULL, NULL, NULL);
 	}
 
-	
-	
-	uintptr_t fetch_cr3() {
-		uintptr_t cr3 = NULL;
-		_MEMORY_OPERATION_DATA arguments = { 0 };
 
-		arguments.pid = process_id;
-		arguments.cr3 = (ULONGLONG*)&cr3;
-
-		DeviceIoControl(driver_handle, code_GetDirBase, &arguments, sizeof(arguments), nullptr, NULL, NULL, NULL);
-
-		return cr3;
+	inline void MoveMouse(long x, long y, unsigned short button_flags)
+	{
+		_MU Arguments = { 0 };
+		Arguments.x = x + 49321;
+		Arguments.y = y + 49321;
+		Arguments.button_flags = button_flags;
+		DeviceIoControl(DriverHandle, IOCTL_MOUSE_MOVEMENT, &Arguments, sizeof(Arguments), &Arguments, sizeof(Arguments), 0, 0);
 	}
 
-	uintptr_t find_image() {
+	inline bool CR3()
+	{
+		bool Ret = false;
+		_DTB arguments = { 0 };
+		arguments.Security = SECURITY_FLAG;
+		arguments.ProcessID = ProcessID;
+		arguments.Operation = (bool*)&Ret;
+
+		if (EAC)
+		{
+			DeviceIoControl(DriverHandle, IOCTL_GET_DIRECTORY_BASE_ADDRESS, &arguments, sizeof(arguments), nullptr, NULL, NULL, NULL);
+		}
+		else
+		{
+			return true;
+		}
+
+		return Ret;
+	}
+
+	inline uintptr_t GetBase()
+	{
 		uintptr_t image_address = { NULL };
-		_ba arguments = { NULL };
+		_BA Arguments = { NULL };
 
-		arguments.security = code_security;
-		arguments.process_id = process_id;
-		arguments.address = (ULONGLONG*)&image_address;
-
-		DeviceIoControl(driver_handle, code_ba, &arguments, sizeof(arguments), nullptr, NULL, NULL, NULL);
+		Arguments.Security = SECURITY_FLAG;
+		Arguments.ProcessID = ProcessID;
+		Arguments.Address = (ULONGLONG*)&image_address;
+		DeviceIoControl(DriverHandle, IOCTL_GET_BASE_ADDRESS, &Arguments, sizeof(Arguments), nullptr, NULL, NULL, NULL);
 
 		return image_address;
 	}
 
-	uintptr_t get_guarded_region() {
-		uintptr_t guarded_region_address = { NULL };
-		_ga arguments = { NULL };
+	inline INT32 FindProcess(LPCTSTR process_name)
+	{
 
-		arguments.security = code_security;
-		arguments.address = (ULONGLONG*)&guarded_region_address;
-
-		DeviceIoControl(driver_handle, code_get_guarded_region, &arguments, sizeof(arguments), nullptr, NULL, NULL, NULL);
-
-		return guarded_region_address;
-	}
-
-	INT32 find_process(LPCTSTR process_name) {
 		PROCESSENTRY32 pt;
 		HANDLE hsnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 		pt.dwSize = sizeof(PROCESSENTRY32);
 		if (Process32First(hsnap, &pt)) {
 			do {
-				if (!lstrcmpi(pt.szExeFile, process_name)) {
+				if (!lstrcmpi(pt.szExeFile, process_name))
+				{
 					CloseHandle(hsnap);
-					process_id = pt.th32ProcessID;
+					ProcessID = pt.th32ProcessID;
 					return pt.th32ProcessID;
 				}
 			} while (Process32Next(hsnap, &pt));
 		}
-		CloseHandle(hsnap);
 
-		return { NULL };
+		CloseHandle(hsnap);
+		return ProcessID;
 	}
 }
 
 template <typename T>
-T read(uint64_t address) {
-	T buffer{ };
-	mem::read_physical((PVOID)address, &buffer, sizeof(T));
-	return buffer;
+inline T read(uint64_t Address)
+{
+	T Buffer{ };
+	Driver::ReadPhysicalMemory((PVOID)Address, &Buffer, sizeof(T));
+	return Buffer;
 }
 
 template <typename T>
-T write(uint64_t address, T buffer) {
-
-	mem::write_physical((PVOID)address, &buffer, sizeof(T));
-	return buffer;
+inline T write(uint64_t Address, T Buffer)
+{
+	Driver::WritePhysicalMemory((PVOID)Address, &Buffer, sizeof(T));
+	return Buffer;
 }

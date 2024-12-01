@@ -1,6 +1,7 @@
 #pragma once
 #include <d3d9.h>
 #include <vector>
+#include <numbers>
 #define M_PI 3.14159265358979323846264338327950288419716939937510
 
 class Vector2
@@ -159,8 +160,8 @@ Camera get_view_point()
 {
 	//YOU MIGHT NEED TO UPDATE THE LOCATION AND ROTATION POINTER IN THE NEXT UPDATE SO CHECK IT OUT DONT FORGET!
 	Camera view_point{};
-	uintptr_t location_pointer = read<uintptr_t>(cache::uworld + 0x128); //
-	uintptr_t rotation_pointer = read<uintptr_t>(cache::uworld + 0x138); //
+	uintptr_t location_pointer = read<uintptr_t>(cache::uworld + 0x130); //
+	uintptr_t rotation_pointer = read<uintptr_t>(cache::uworld + 0x140); //
 	FNRot fnrot{};
 	fnrot.a = read<double>(rotation_pointer);
 	fnrot.b = read<double>(rotation_pointer + 0x20);
@@ -168,7 +169,7 @@ Camera get_view_point()
 	view_point.location = read<Vector3>(location_pointer);
 	view_point.rotation.x = asin(fnrot.c) * (180.0 / M_PI);
 	view_point.rotation.y = ((atan2(fnrot.a * -1, fnrot.b) * (180.0 / M_PI)) * -1) * -1;
-	view_point.fov = read<float>(cache::player_controller + 0x3AC) * 90.f; //0x3AC
+	view_point.fov = read<float>(cache::player_controller + 0x3AC) * 90.0f;
 	return view_point;
 }
 
@@ -195,11 +196,11 @@ Vector3 get_entity_bone(uintptr_t mesh, int bone_id)
 	return Vector3(matrix._41, matrix._42, matrix._43);
 }
 
-
 //MIGHT NEED TO UPDATE is_visible IN THE NEXT UPDATE SO CHECK IT OUT PLEASE!
 bool is_visible(uintptr_t mesh)
 {
-	double Seconds = read<double>(cache::uworld + 0x148);
-	float LastRenderTime = read<float>(mesh + LAST_SUBMIT_TIME_ON_SCREEN);
+	auto Seconds = read<double>(cache::uworld + 0x150);
+	auto LastRenderTime = read<float>(mesh + 0x30C);
 	return Seconds - LastRenderTime <= 0.06f;
 }
+

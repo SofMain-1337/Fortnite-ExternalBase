@@ -17,8 +17,10 @@ void main()
 	while (game_wnd == 0)
 	{
 		Sleep(1);
-		mem::process_id = mem::find_process(L"FortniteClient-Win64-Shipping.exe"); //searching for process
-		game_wnd = get_process_wnd(mem::process_id); //found the process
+		//mem::process_id = mem::find_process(L"FortniteClient-Win64-Shipping.exe"); //searching for process // old driver
+		//game_wnd = get_process_wnd(mem::process_id); //found the process //old driver
+		processID = Driver::FindProcess(L"FortniteClient-Win64-Shipping.exe"); //searching for process
+		game_wnd = get_process_wnd(processID); //found the process
 		Sleep(1);
 	}
 
@@ -42,20 +44,25 @@ void main()
 		Sleep(3000);
 		exit(0);
 	}
-	if (!mem::find_driver())
+	if (!Driver::Init())
 	{
 		printf("The driver was not initialized :("); //driver wasnt initialized please go to definition and check or check ur shitty pc OR YOU JUST FCKED THE COMMS IDK JUST DOUBLE CHECK EVERYTHING FOR THIS ONE!
 		Sleep(3000);
 		exit(0);
+	}
+	if (!Driver::CR3())
+	{
+
 	}
 	//if (!mem::fetch_cr3())
 	//{
 
 	//}
 	//DONT TOUCH HERE PASTER! TOUCH ONLY IF YOU WANNA CHANGE DRIVER OR IF YOU KNOW WHAT YOU ARE DOING! -SOFMAIN
-	 virtualaddy = mem::find_image();
-	 auto cr3 = mem::fetch_cr3();
-	if (!mem::driver_handle) //base_address //driver_handle
+	// virtualaddy = mem::find_image(); // old driver
+	Base = Driver::GetBase();
+
+	if (!Base) //base_address //driver_handle
 	{
 		printf("The driver couldn't get the base address"); //Check ur driver base in the code if u get this error! Mine doesnt have a base_address so its driver_handle
 		Sleep(3000);
