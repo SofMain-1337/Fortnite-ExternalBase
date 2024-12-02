@@ -1,5 +1,7 @@
 This Is my External Fortnite base! Offsets Updated so it should work!
 
+I WILL UPDATE THIS SOURCE EVERY UPDATE!
+
 Update v2: Changed Driver to ud one Fixed cr3 and crashing issue Updated to the new fortnite chapter!
 
 Update v1:
