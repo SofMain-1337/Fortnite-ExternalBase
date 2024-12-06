@@ -1,7 +1,0 @@
-﻿  main.cpp
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\numbers(11): warning STL4038: The contents of <numbers> are available only with C++20 or later.
-  Generating code
-  Previous IOBJ not found, fall back to full compilation.
-  All 1532 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Finished generating code
-  SofMainFNBase.vcxproj -> C:\Users\SFN\Desktop\base\SofMainFnBase Pub\SofMainFNBase\x64\Release\SofMainFNBase.exe
