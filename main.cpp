@@ -9,7 +9,6 @@
 
 
 //REMOVED THE CR3 LOOP TO FIX THE CRASH ISSUE!
-
 void main()
 {
 	printf("Waiting for Fortnite...");

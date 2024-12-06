@@ -11,7 +11,7 @@ D3DPRESENT_PARAMETERS p_params = { NULL };
 MSG messager = { NULL };
 HWND my_wnd = NULL;
 HWND game_wnd = NULL;
-
+DWORD processID;
 HRESULT directx_init()
 {
 	if (FAILED(Direct3DCreate9Ex(D3D_SDK_VERSION, &p_object))) exit(3);

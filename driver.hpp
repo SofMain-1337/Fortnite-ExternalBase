@@ -1,5 +1,5 @@
 #pragma once
-//btw guys credits for this driver jeremyud! (its good ud i could say so you can last alot!)
+
 #include <winternl.h>
 #include <intrin.h>
 #include <Windows.h>
@@ -8,17 +8,16 @@
 #include <stdint.h>
 
 inline uintptr_t Base;
-inline int processID;
 
 #define CTL_CODE( DeviceType, Function, Method, Access ) (                 \
     ((DeviceType) << 16) | ((Access) << 14) | ((Function) << 2) | (Method) \
 )
 
-#define IOCTL_GET_DIRECTORY_BASE_ADDRESS CTL_CODE(FILE_DEVICE_UNKNOWN, 0x234F, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
-#define IOCTL_READ_WRITE_OPERATION CTL_CODE(FILE_DEVICE_UNKNOWN, 0x845A, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
-#define IOCTL_MOUSE_MOVEMENT CTL_CODE(FILE_DEVICE_UNKNOWN, 0x458C, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
-#define IOCTL_GET_BASE_ADDRESS CTL_CODE(FILE_DEVICE_UNKNOWN, 0x85F1, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
-#define SECURITY_FLAG 0x34D391
+#define IOCTL_GET_DIRECTORY_BASE_ADDRESS CTL_CODE(FILE_DEVICE_UNKNOWN, 0xF7A3, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#define IOCTL_READ_WRITE_OPERATION CTL_CODE(FILE_DEVICE_UNKNOWN, 0x9B1E, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#define IOCTL_MOUSE_MOVEMENT CTL_CODE(FILE_DEVICE_UNKNOWN, 0x1D7C, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#define IOCTL_GET_BASE_ADDRESS CTL_CODE(FILE_DEVICE_UNKNOWN, 0xD835, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
+#define SECURITY_FLAG 0x7F1E8B
 
 #define MOUSE_LEFT_BUTTON_DOWN   0x0001  // Left Button changed to down.
 #define MOUSE_LEFT_BUTTON_UP     0x0002  // Left Button changed to up.
@@ -64,7 +63,7 @@ namespace Driver
 
 	inline bool Init()
 	{
-		DriverHandle = CreateFileA(("\\\\.\\\sofmainud"), GENERIC_READ | GENERIC_WRITE, 0, 0, 3, 0x00000080, 0);
+		DriverHandle = CreateFileA(("\\\\.\\\{jeremyownsyou}"), GENERIC_READ | GENERIC_WRITE, 0, 0, 3, 0x00000080, 0);
 
 		if (!DriverHandle || (DriverHandle == INVALID_HANDLE_VALUE))
 
@@ -105,16 +104,6 @@ namespace Driver
 			Arguments.EAC = FALSE;
 
 		DeviceIoControl(DriverHandle, IOCTL_READ_WRITE_OPERATION, &Arguments, sizeof(Arguments), nullptr, NULL, NULL, NULL);
-	}
-
-
-	inline void MoveMouse(long x, long y, unsigned short button_flags)
-	{
-		_MU Arguments = { 0 };
-		Arguments.x = x + 49321;
-		Arguments.y = y + 49321;
-		Arguments.button_flags = button_flags;
-		DeviceIoControl(DriverHandle, IOCTL_MOUSE_MOVEMENT, &Arguments, sizeof(Arguments), &Arguments, sizeof(Arguments), 0, 0);
 	}
 
 	inline bool CR3()
