@@ -222,7 +222,7 @@ void Debugg()
 ImVec2 GetWatermarkSize()
 {
 	ImVec2 position = ImVec2(30, 30);
-	const char* text = "SofMain FN Base [Private Build]";
+	const char* text = "SofMain FN Base [Free/Public Build]";
 
 	//ImVec2 position = ImVec2(30, 30);
 	//const char* text = "Fortnite [Public]";
@@ -347,7 +347,7 @@ void game_loop()
 
 		ImVec2 position = ImVec2(30, 30);
 		ImColor color = ImColor(0.63f, 0.13f, 0.94f, 1.f);
-		const char* text = "SofMain FN Base [Private Build]";
+		const char* text = "SofMain FN Base [Free/Public Build]";
 
 		//  ImVec2 position = ImVec2(30, 30);
 		//  ImColor color = ImColor(1.0f, 1.0f, 1.0f, 1.f);

@@ -160,8 +160,8 @@ Camera get_view_point()
 {
 	//YOU MIGHT NEED TO UPDATE THE LOCATION AND ROTATION POINTER IN THE NEXT UPDATE SO CHECK IT OUT DONT FORGET!
 	Camera view_point{};
-	uintptr_t location_pointer = read<uintptr_t>(cache::uworld + 0x120); //
-	uintptr_t rotation_pointer = read<uintptr_t>(cache::uworld + 0x130); //
+	uintptr_t location_pointer = read<uintptr_t>(cache::uworld + 0x130); //
+	uintptr_t rotation_pointer = read<uintptr_t>(cache::uworld + 0x140); //
 	FNRot fnrot{};
 	fnrot.a = read<double>(rotation_pointer);
 	fnrot.b = read<double>(rotation_pointer + 0x20);
@@ -199,7 +199,7 @@ Vector3 get_entity_bone(uintptr_t mesh, int bone_id)
 //MIGHT NEED TO UPDATE is_visible IN THE NEXT UPDATE SO CHECK IT OUT PLEASE!
 bool is_visible(uintptr_t mesh)
 {
-	auto Seconds = read<double>(cache::uworld + 0x140);
+	auto Seconds = read<double>(cache::uworld + 0x150);
 	auto LastRenderTime = read<float>(mesh + 0x30C);
 	return Seconds - LastRenderTime <= 0.06f;
 }
