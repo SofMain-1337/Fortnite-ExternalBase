@@ -43,7 +43,7 @@ namespace mem {
 	INT32 process_id;
 
 	bool find_driver() {
-		driver_handle = CreateFileW((L"\\\\.\\soffntest"), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL); //DRIVER COMM NAME
+		driver_handle = CreateFileW((L"\\\\.\\sofmainud1337"), GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_EXISTING, 0, NULL); //DRIVER COMM NAME
 
 		if (!driver_handle || (driver_handle == INVALID_HANDLE_VALUE))
 			return false;

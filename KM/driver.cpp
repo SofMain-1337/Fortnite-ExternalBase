@@ -636,8 +636,8 @@ NTSTATUS initialize_driver(PDRIVER_OBJECT drv_obj, PUNICODE_STRING path) {
 	PDEVICE_OBJECT device_obj = NULL;
 
 	UNICODE_STRING name, link;
-	RtlInitUnicodeString(&name, L"\\Device\\winniewhat12sofmain"); // driver name
-	RtlInitUnicodeString(&link, L"\\DosDevices\\winniewhat12sofmain"); // driver name
+	RtlInitUnicodeString(&name, L"\\Device\\sofmainud1337"); // driver name
+	RtlInitUnicodeString(&link, L"\\DosDevices\\sofmainud1337"); // driver name
 
 	// Create the device
 	status = IoCreateDevice(drv_obj, 0, &name, FILE_DEVICE_UNKNOWN, FILE_DEVICE_SECURE_OPEN, FALSE, &device_obj);
