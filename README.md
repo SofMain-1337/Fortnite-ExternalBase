@@ -1,5 +1,7 @@
 This Is my External Fortnite base! Offsets Updated so it should work!
 
+!!IF YOU SELL THIS OR CLAIM ITS YOURS WITHOUT CREDITS YOU GETTING BLACKLISTED/BANNED/CLOWNED/EXPOSED BY ME AND OTHER COMMUNITIES!!
+--
 I WILL UPDATE THIS SOURCE EVERY UPDATE!
 
 MAKE SURE PROJECT IS SET TO: Release x64
@@ -11,3 +13,4 @@ I Added some shit box esp water mark etc.. Fixed fps drops and cr3 crash And cha
 
 
 Join my Discord Server for updates, offsets etc.. https://discord.gg/KCfyvNCZGA
+-SofMain
