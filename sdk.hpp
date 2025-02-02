@@ -160,8 +160,8 @@ Camera get_view_point()
 {
 	//YOU MIGHT NEED TO UPDATE THE LOCATION AND ROTATION POINTER IN THE NEXT UPDATE SO CHECK IT OUT DONT FORGET!
 	Camera view_point{};
-	uintptr_t location_pointer = read<uintptr_t>(cache::uworld + 0x128); //
-	uintptr_t rotation_pointer = read<uintptr_t>(cache::uworld + 0x138); //
+	uintptr_t location_pointer = read<uintptr_t>(cache::uworld + 0x130); //
+	uintptr_t rotation_pointer = read<uintptr_t>(cache::uworld + 0x140); //
 	FNRot fnrot{};
 	fnrot.a = read<double>(rotation_pointer);
 	fnrot.b = read<double>(rotation_pointer + 0x20);

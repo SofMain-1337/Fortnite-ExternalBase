@@ -137,9 +137,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Library Include="d3d9.lib" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="driver.hpp" />
     <ClInclude Include="game.hpp" />
     <ClInclude Include="gui.hpp" />

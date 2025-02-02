@@ -3,6 +3,7 @@
 #include "imgui/imgui_impl_dx9.h"
 #include "imgui/imgui_impl_win32.h"
 #include <dwmapi.h>
+#include <d3d9.h>
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "dwmapi.lib")
 IDirect3D9Ex* p_object = NULL;
