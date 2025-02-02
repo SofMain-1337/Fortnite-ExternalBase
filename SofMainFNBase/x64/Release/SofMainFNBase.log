@@ -1,8 +1,0 @@
-﻿  main.cpp
-C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.42.34433\include\numbers(11): warning STL4038: The contents of <numbers> are available only with C++20 or later.
-  Generating code
-  17 of 1532 functions ( 1.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    19 functions had inline decision re-evaluated but remain unchanged
-  Finished generating code
-  SofMainFNBase.vcxproj -> C:\Users\SFN\Desktop\base\SofMainFnBase Pub\SofMainFNBase\x64\Release\SofMainFNBase.exe
