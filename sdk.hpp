@@ -25,45 +25,58 @@ public:
 	Vector3 operator-(Vector3 v) { return Vector3(x - v.x, y - v.y, z - v.z); }
 };
 
+
+// FIXED FOOT ESP
 struct FQuat { double x, y, z, w; };
 struct FTransform
 {
-	FQuat rot;
+	FQuat rotation;
 	Vector3 translation;
-	char pad[4];
-	Vector3 scale;
-	char pad1[4];
+	uint8_t pad1c[0x8];
+	Vector3 scale3d;
+	uint8_t pad2c[0x8];
+
 	D3DMATRIX to_matrix_with_scale()
 	{
 		D3DMATRIX m{};
+
+		const Vector3 Scale
+		(
+			(scale3d.x == 0.0) ? 1.0 : scale3d.x,
+			(scale3d.y == 0.0) ? 1.0 : scale3d.y,
+			(scale3d.z == 0.0) ? 1.0 : scale3d.z
+		);
+
+		const double x2 = rotation.x + rotation.x;
+		const double y2 = rotation.y + rotation.y;
+		const double z2 = rotation.z + rotation.z;
+		const double xx2 = rotation.x * x2;
+		const double yy2 = rotation.y * y2;
+		const double zz2 = rotation.z * z2;
+		const double yz2 = rotation.y * z2;
+		const double wx2 = rotation.w * x2;
+		const double xy2 = rotation.x * y2;
+		const double wz2 = rotation.w * z2;
+		const double xz2 = rotation.x * z2;
+		const double wy2 = rotation.w * y2;
+
 		m._41 = translation.x;
 		m._42 = translation.y;
 		m._43 = translation.z;
-		float x2 = rot.x + rot.x;
-		float y2 = rot.y + rot.y;
-		float z2 = rot.z + rot.z;
-		float xx2 = rot.x * x2;
-		float yy2 = rot.y * y2;
-		float zz2 = rot.z * z2;
-		m._11 = (1.0f - (yy2 + zz2)) * scale.x;
-		m._22 = (1.0f - (xx2 + zz2)) * scale.y;
-		m._33 = (1.0f - (xx2 + yy2)) * scale.z;
-		float yz2 = rot.y * z2;
-		float wx2 = rot.w * x2;
-		m._32 = (yz2 - wx2) * scale.z;
-		m._23 = (yz2 + wx2) * scale.y;
-		float xy2 = rot.x * y2;
-		float wz2 = rot.w * z2;
-		m._21 = (xy2 - wz2) * scale.y;
-		m._12 = (xy2 + wz2) * scale.x;
-		float xz2 = rot.x * z2;
-		float wy2 = rot.w * y2;
-		m._31 = (xz2 + wy2) * scale.z;
-		m._13 = (xz2 - wy2) * scale.x;
+		m._11 = (1.0f - (yy2 + zz2)) * Scale.x;
+		m._22 = (1.0f - (xx2 + zz2)) * Scale.y;
+		m._33 = (1.0f - (xx2 + yy2)) * Scale.z;
+		m._32 = (yz2 - wx2) * Scale.z;
+		m._23 = (yz2 + wx2) * Scale.y;
+		m._21 = (xy2 - wz2) * Scale.y;
+		m._12 = (xy2 + wz2) * Scale.x;
+		m._31 = (xz2 + wy2) * Scale.z;
+		m._13 = (xz2 - wy2) * Scale.x;
 		m._14 = 0.0f;
 		m._24 = 0.0f;
 		m._34 = 0.0f;
 		m._44 = 1.0f;
+
 		return m;
 	}
 };
@@ -160,8 +173,8 @@ Camera get_view_point()
 {
 	//YOU MIGHT NEED TO UPDATE THE LOCATION AND ROTATION POINTER IN THE NEXT UPDATE SO CHECK IT OUT DONT FORGET!
 	Camera view_point{};
-	uintptr_t location_pointer = read<uintptr_t>(cache::uworld + 0x128); //
-	uintptr_t rotation_pointer = read<uintptr_t>(cache::uworld + 0x138); //
+	uintptr_t location_pointer = read<uintptr_t>(cache::uworld + 0x128);
+	uintptr_t rotation_pointer = read<uintptr_t>(cache::uworld + 0x138);
 	FNRot fnrot{};
 	fnrot.a = read<double>(rotation_pointer);
 	fnrot.b = read<double>(rotation_pointer + 0x20);
@@ -169,7 +182,7 @@ Camera get_view_point()
 	view_point.location = read<Vector3>(location_pointer);
 	view_point.rotation.x = asin(fnrot.c) * (180.0 / M_PI);
 	view_point.rotation.y = ((atan2(fnrot.a * -1, fnrot.b) * (180.0 / M_PI)) * -1) * -1;
-	view_point.fov = read<float>(cache::player_controller + 0x3AC) * 90.0f;
+	view_point.fov = read<float>(cache::player_controller + 0x3AC) * 90.0f; //ITS 0x3AC since we use player controller if u use local player then use 0x4AC
 	return view_point;
 }
 
@@ -189,7 +202,7 @@ Vector2 project_world_to_screen(Vector3 world_location)
 Vector3 get_entity_bone(uintptr_t mesh, int bone_id)
 {
 	uintptr_t bone_array = read<uintptr_t>(mesh + BONE_ARRAY);
-	if (bone_array == 0) bone_array = read<uintptr_t>(mesh + BONE_ARRAY_CACHE); // 0x10
+	if (bone_array == 0) bone_array = read<uintptr_t>(mesh + BONE_ARRAY_CACHE);
 	FTransform bone = read<FTransform>(bone_array + (bone_id * 0x60));
 	FTransform component_to_world = read<FTransform>(mesh + COMPONENT_TO_WORLD);
 	D3DMATRIX matrix = matrix_multiplication(bone.to_matrix_with_scale(), component_to_world.to_matrix_with_scale());
