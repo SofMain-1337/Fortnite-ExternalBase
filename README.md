@@ -7,9 +7,11 @@ I WILL UPDATE THIS SOURCE EVERY UPDATE!
 --
 MAKE SURE PROJECT IS SET TO: Release x64
 --
-HUGE UPDATE COMING SOON... (new driver,menu,features etc...)
+UPDATED HAPPENED GO CHECK THE NEW SHIT I ADDED!!!! (new driver,menu,features etc...)
 --
-Update v3 (LATEST): Fixed wrong offsets, imgui now placed in folder, fixed issues, updated mapper!
+Update v4 (LATEST): Updated menu, updated driver, added features have fun pasting!
+
+Update v3: Fixed wrong offsets, imgui now placed in folder, fixed issues, updated mapper!
 
 Update v2: Changed Driver to ud one Fixed cr3 and crashing issue Updated to the new fortnite chapter!
 
