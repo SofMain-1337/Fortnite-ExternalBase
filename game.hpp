@@ -4,7 +4,6 @@
 #include "imgui/imgui_impl_win32.h"
 #include <dwmapi.h>
 #include <d3d9.h>
-#include <D3DX9.h>
 #include "includes.hpp"
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "dwmapi.lib")
