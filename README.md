@@ -8,7 +8,8 @@ I WILL UPDATE THIS SOURCE EVERY UPDATE!
 MAKE SURE PROJECT IS SET TO: Release x64
 --
 UPDATED HAPPENED GO CHECK THE NEW SHIT I ADDED!!!! (new driver,menu,features etc...)
---
+
+
 Update v4 (LATEST): Updated menu, updated driver, added features have fun pasting!
 
 Update v3: Fixed wrong offsets, imgui now placed in folder, fixed issues, updated mapper!
@@ -20,3 +21,5 @@ Update v1: I Added some shit box esp water mark etc.. Fixed fps drops and cr3 cr
 Join my Discord Server for updates, offsets etc.. https://discord.gg/KCfyvNCZGA
 --
 -SofMain
+
+--![sofmainudcheat](https://github.com/user-attachments/assets/7d68a6e3-4098-425f-be6f-c4eb28012c49)
