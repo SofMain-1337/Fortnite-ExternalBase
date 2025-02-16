@@ -1,4 +1,4 @@
-This Is my External Fortnite base! Offsets Updated so it should work!
+This Is my External Fortnite Cheat base! Offsets Updated so it should work!
 
 
 !!IF YOU SELL THIS OR CLAIM ITS YOURS WITHOUT CREDITS YOU GETTING BLACKLISTED/BANNED/CLOWNED/EXPOSED BY ME AND OTHER COMMUNITIES!!
