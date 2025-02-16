@@ -6,9 +6,6 @@
 #include <d3d9.h>
 #include <D3DX9.h>
 #include "includes.hpp"
-#include "important/fonts.h"
-#include "important/icons.h"
-#include "important/image.h"
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "dwmapi.lib")
 IDirect3D9Ex* p_object = NULL;

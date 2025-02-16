@@ -58,25 +58,10 @@
       <Filter>imgui</Filter>
     </ClInclude>
     <ClInclude Include="Keybinds.h" />
-    <ClInclude Include="important\config.h">
-      <Filter>important</Filter>
-    </ClInclude>
-    <ClInclude Include="important\fonts.h">
-      <Filter>important</Filter>
-    </ClInclude>
-    <ClInclude Include="important\icons.h">
-      <Filter>important</Filter>
-    </ClInclude>
-    <ClInclude Include="important\image.h">
-      <Filter>important</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="imgui">
       <UniqueIdentifier>{87384cc5-56e2-45b9-acb8-28511fddebdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="important">
-      <UniqueIdentifier>{d8f1a1e4-6e2d-4d4e-9ecb-00be4d87db1e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
